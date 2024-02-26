@@ -45,4 +45,28 @@
         @apply btn bg-gray-800 text-white;
         @apply hover:bg-gray-900;
     }
+    .form-control {
+        @apply block w-full bg-white text-black dark:bg-gray-800 dark:text-gray-200 rounded-lg shadow-md;
+    }
+    .form-control:focus {
+        @apply outline-none ring-2 ring-blue-500;
+    }
+    .form-control-error {
+        @apply block w-full bg-red-200 text-red-800 rounded-lg shadow-md;
+    }
+    .form-control-error:focus {
+        @apply outline-none ring-2 ring-red-500;
+    }
+    .form-control-success {
+        @apply block w-full bg-green-200 text-green-800 rounded-lg shadow-md;
+    }
+    .form-control-success:focus {
+        @apply outline-none ring-2 ring-green-500;
+    }
+    .form-control-warning {
+        @apply block w-full bg-yellow-200 text-yellow-800 rounded-lg shadow-md;
+    }
+    .form-control-warning:focus {
+        @apply outline-none ring-2 ring-yellow-500;
+    }
 }

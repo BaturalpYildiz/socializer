@@ -38,4 +38,14 @@ class Post extends Model
         }
         return $foundPostVote;
     }
+
+    public function likes_counter(): int
+    {
+        return post_vote::where('post_id', $this->id)->where('liked', 1)->count();
+    }
+
+    public function dislikes_counter(): int
+    {
+        return post_vote::where('post_id', $this->id)->where('disliked', 1)->count();
+    }
 }

@@ -10,13 +10,26 @@
     </div>
 
     <div class="p-6 sm:px-20 flex gap-6 ">
-        <div class="md:flex-grow">
+        <div class="">
             {{-- Pagination (TODO: make it a custom navigation with the searchbar integrated for the best experience) --}}
             {{-- TODO: Pagination has a fault. When the post is viewed and the modal is closed the href tags to the different pages changes to "livewire/update" --}}
-            {{ $posts->links('pagination::tailwind') }}
+            {{ $posts->links('pagination::simple-tailwind') }}
 
         </div>
         <div class="md:flex-shrink">
+            {{-- Filter with selection for status of the posts --}}
+            <label for="status" class="block text-sm font-medium text-gray-700 dark:text-gray-200">
+                {{ __('Status') }}
+            </label>
+            <select wire:model.live="status" class="form-control">
+                <option value="0">All</option>
+                @foreach ($postStatuses as $status)
+                    <option value="{{ $status->id }}">{{ ucfirst($status->name) }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="md:flex-shrink">
+            {{-- Search bar --}}
             <div class="relative mx-auto text-gray-600">
                 {{-- search bar --}}
                 <input type="text" wire:model.live="query"
@@ -88,17 +101,47 @@
                             <p class="text-white text-pretty p-2">
                                 Status:
                                 {{-- id 1 = concept, 2 = draft, 3 = published --}}
-                                @if ($post->status->id == 2)
+                                @if ($post->status->id == 1)
+                                    <span class="text-red-600">
+                                        {{ ucfirst($post->status->name) }}
+                                        <br>
+                                        <span class="text-xs text-red-400">
+                                            (Post not visible to the public)
+                                        </span>
+                                    </span>
+                                @elseif ($post->status->id == 2)
                                     <span class="text-yellow-500 dark:text-yellow-400">
                                         {{ ucfirst($post->status->name) }}!
+                                        <br>
+                                        <span class="text-xs text-yellow-400">
+                                            (Post under construction)
+                                        </span>
                                     </span>
                                 @elseif ($post->status->id == 3)
-                                    <span class="text-green dark:text-green-400">
+                                    <span class="text-green-400">
                                         {{ ucfirst($post->status->name) }}
                                     </span>
                                 @endif
                             </p>
 
+                        </div>
+                        <div class="flex-grow">
+                            {{-- show the number of likes and dislikes --}}
+                            <p class="text-white
+                                text-pretty p-2">
+                                <span
+                                    class="text-xs text-green
+                                    dark:text-green-400">
+                                    Likes:
+                                    {{ $post->likes_counter() }}
+                                </span>
+                                <span
+                                    class="text-xs text-red-400
+                                    dark:text-red-400">
+                                    Dislikes:
+                                    {{ $post->dislikes_counter() }}
+                                </span>
+                            </p>
                         </div>
                         <div class="gap-2 ">
                             @if (Auth::user()->id === $post->user_id)

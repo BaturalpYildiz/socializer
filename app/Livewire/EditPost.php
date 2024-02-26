@@ -19,11 +19,19 @@ class EditPost extends Component
     {
         $this->setPostDetails(request()->route('id'));
         $this->all_status = post_status::all();
+
+        $this->checkUser();
     }
 
     public function render()
     {
         return view('livewire.edit-post');
+    }
+    private function checkUser()
+    {
+        if ($this->currentPost->user_id !== auth()->id()) {
+            return redirect()->route('posts');
+        }
     }
     private function setPostDetails(int|string $id)
     {
@@ -39,6 +47,8 @@ class EditPost extends Component
 
     public function updatePost()
     {
+
+        $this->checkUser();
         $this->currentPost->title = $this->title;
         $this->currentPost->content = $this->content;
         $this->currentPost->status_id = $this->status;
@@ -48,6 +58,8 @@ class EditPost extends Component
 
     public function deletePost()
     {
+
+        $this->checkUser();
         $this->currentPost->delete();
         return redirect()->route('posts')->with('success', 'Post deleted successfully');
     }

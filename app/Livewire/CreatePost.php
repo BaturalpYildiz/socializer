@@ -12,7 +12,7 @@ class CreatePost extends Component
 
     public string $title = "";
     public string $content = "";
-    public int $status = 0;
+    public int $status = 1;
 
     public function render()
     {
@@ -22,6 +22,7 @@ class CreatePost extends Component
     public function mount()
     {
         $this->all_status = post_status::all();
+        $this->status = $this->all_status->first()->id;
     }
 
     public function createPost()
